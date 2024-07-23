@@ -1,0 +1,24 @@
+- name: Install and configure nginx
+  hosts: nginx_servers
+  become: true
+  tasks:
+    - name: Install nginx
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+        update_cache: true
+
+    - name: Configure nginx to send php to 9000 port
+      ansible.builtin.blockinfile:
+        path: /etc/nginx/sites-available/default
+        block: |
+          location ~ \.php$ {
+              include snippets/fastcgi-php.conf;
+              fastcgi_pass 127.0.0.1:9000;
+          }
+
+    - name: Start and enable nginx service
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: true

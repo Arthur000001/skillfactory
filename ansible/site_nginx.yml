@@ -1,0 +1,6 @@
+- name: Site_nginx
+  hosts: nginx_servers
+  become: true
+  roles:
+    - users
+    - http
