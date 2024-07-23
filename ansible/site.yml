@@ -1,0 +1,10 @@
+---
+- name: Apply DNS and Web Server roles
+  hosts: all
+  become: true
+  roles:
+    - dnsmasq
+    - nginx_php_fpm
+
+- name: Configure superusers
+  import_playbook: superusers.yml
