@@ -1,0 +1,6 @@
+- name: Site_php
+  hosts: php_servers
+  become: true
+  roles:
+    - users
+    - php

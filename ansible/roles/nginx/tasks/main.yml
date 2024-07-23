@@ -1,0 +1,7 @@
+- name: Install nginx
+  community.general.yum:
+    name: 'nginx'
+    state: 'installed'
+
+- name: Start nginx
+  ansible.builtin.systemd: nohup /usr/sbin/nginx -c /etc/nginx/nginx.conf

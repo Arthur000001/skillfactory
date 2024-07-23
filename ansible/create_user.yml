@@ -1,0 +1,27 @@
+- name: Create user and setup SSH key
+  hosts: localhost
+  become: true
+  vars_files:
+    - vault_ssh_key.yml
+  tasks:
+    - name: Ensure user 'arthur' exists
+      ansible.builtin.user:
+        name: arthur
+        state: present
+        createhome: true
+
+    - name: Create .ssh directory
+      ansible.builtin.file:
+        path: /home/arthur/.ssh
+        state: directory
+        owner: arthur
+        group: arthur
+        mode: '0700'
+
+    - name: Add SSH key
+      ansible.builtin.copy:
+        content: "{{ ssh_public_key }}"
+        dest: /home/arthur/.ssh/skillfactory.pub
+        owner: arthur
+        group: arthur
+        mode: '0600'

@@ -1,0 +1,17 @@
+---
+# Это файл main.yml для ваших задач
+- name: Create a directory
+  ansible.builtin.file:
+    path: /tmp/test_directory
+    state: directory
+    mode: '0755'
+
+- name: Create a file
+  ansible.builtin.file:
+    path: "{{ test_arthur_1_test_file_path }}"
+    state: touch
+    mode: '0644'
+
+- name: Print a message
+  ansible.builtin.debug:
+    msg: "Directory and file created successfully."

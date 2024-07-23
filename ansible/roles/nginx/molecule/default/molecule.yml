@@ -1,0 +1,12 @@
+dependency:                                 # Зависимость от Galaxy (роли, плагины и т. д.)
+  name: galaxy
+driver:                                     # Используем Docker в качестве драйвера
+  name: docker
+platforms:                                  # Платформы, на которых будет производиться тестирование
+  - name: instance
+    image: quay.io/centos/centos:stream8
+    pre_build_image: true
+provisioner:                                # Используем Ansible в качестве провиженера для настройки среды
+  name: ansible
+verifier:                                   # Используем Ansible в качестве верификатора для проверки состояния окружения
+  name: ansible

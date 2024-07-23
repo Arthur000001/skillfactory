@@ -1,0 +1,41 @@
+---
+- name: Install Docker  # Описание Playbook
+  hosts: localhost      # Указываем, что Playbook будет выполняться на локальной машине
+  become: true          # Включаем повышение привилегий (sudo)
+  become_method: ansible.builtin.sudo   # Указываем, что для повышения привилегий будет использоваться sudo
+
+  tasks:  # Секция задач, которые будут выполняться
+    - name: Install required packages  # Имя задачи - Установка необходимых пакетов
+      ansible.builtin.apt:  # Используем модуль apt для управления пакетами на Debian-based системах
+        name: "{{ item }}"  # Имя пакета будет заменено на каждый элемент в loop
+        state: present  # Указываем, что пакет должен быть установлен
+      loop:  # Перебираем список пакетов для установки
+        - apt-transport-https  # Пакет для транспортировки данных через HTTPS
+        - ca-certificates  # Пакет для управления сертификатами
+        - curl  # Пакет для передачи данных с URL-адресов
+        - software-properties-common  # Пакет для управления репозиториями
+
+    - name: Add Docker’s official GPG key  # Имя задачи - Добавление официального GPG ключа Docker
+      ansible.builtin.apt_key:  # Используем модуль apt_key для управления ключами репозиториев
+        url: https://download.docker.com/linux/ubuntu/gpg  # URL для загрузки ключа
+        state: present  # Указываем, что ключ должен быть добавлен
+
+    - name: Add Docker repository  # Имя задачи - Добавление репозитория Docker
+      ansible.builtin.apt_repository:  # Используем модуль apt_repository для управления репозиториями
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable  # Адрес репозитория
+        state: present  # Указываем, что репозиторий должен быть добавлен
+
+    - name: Update apt package index  # Имя задачи - Обновление индекса пакетов apt
+      ansible.builtin.apt:  # Используем модуль apt
+        update_cache: true  # Указываем, что нужно обновить кэш пакетов
+
+    - name: Install Docker CE  # Имя задачи - Установка Docker CE
+      ansible.builtin.apt:  # Используем модуль apt для установки пакета Docker
+        name: docker-ce  # Имя пакета для установки
+        state: present  # Указываем, что пакет должен быть установлен
+
+    - name: Ensure Docker is started and enabled  # Имя задачи - Запуск и включение Docker
+      ansible.builtin.systemd:  # Используем модуль systemd для управления сервисами
+        name: docker  # Имя сервиса
+        state: started  # Указываем, что сервис должен быть запущен
+        enabled: true  # Указываем, что сервис должен быть включен при загрузке системы
