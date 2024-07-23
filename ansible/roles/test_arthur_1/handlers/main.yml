@@ -1,6 +1,0 @@
----
-# Это файл main.yml для ваших handlers
-- name: Restart nginx
-  ansible.builtin.service:
-    name: nginx
-    state: restarted

@@ -1,9 +1,0 @@
-galaxy_info:
-  author: "Arthur"
-  description: "Role for testing Ansible roles"
-  company: "MyCompany"
-  license: "MIT"
-  min_ansible_version: "2.1"
-  galaxy_tags: []
-
-dependencies: []
