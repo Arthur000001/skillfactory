@@ -1,0 +1,26 @@
+# Исключение директорий build и dist
+build/
+dist/
+
+# Исключение всех файлов с расширением .env
+*.env
+
+# Исключение конфиденциальных файлов
+terraform.tfvars
+key.json
+user1_id_rsa
+user1_id_rsa.pub
+tfplan.txt
+backend.hcl
+.terraform.lock.hcl
+*.pem
+**/.terraform
+
+# Исключение временных файлов и логов
+*.log
+*.tmp
+
+# Исключение системных файлов
+.DS_Store
+Thumbs.db
+

@@ -1,2 +1,2 @@
 # skillfactory
-SkillFactory
+Проект для обучения на SkillFacory
