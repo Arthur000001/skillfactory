@@ -1,0 +1,16 @@
+galaxy_info:
+  author: Arthur
+  description: "Role for testing Ansible roles"
+  company: MyCompany
+  license: GPL-3.0-or-later
+  min_ansible_version: "2.9"
+  platforms:
+    - name: EL
+      versions:
+        - all
+    - name: Fedora
+      versions:
+        - all
+  galaxy_tags: []
+  role_name: nginx
+  namespace: your_namespace
