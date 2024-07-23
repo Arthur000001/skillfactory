@@ -1,0 +1,21 @@
+---
+- name: Install MySQL  # Описание Playbook
+  hosts: localhost     # Указываем, что Playbook будет выполняться на локальной машине
+  become: true         # Включаем повышение привилегий (sudo)
+  become_method: ansible.builtin.sudo  # Указываем, что для повышения привилегий будет использоваться sudo
+
+  tasks:  # Секция задач, которые будут выполняться
+    - name: Update apt package index  # Имя задачи - Обновление индекса пакетов apt
+      ansible.builtin.apt:  # Используем модуль apt для управления пакетами на Debian-based системах
+        update_cache: true  # Указываем, что нужно обновить кэш пакетов
+
+    - name: Install MySQL server  # Имя задачи - Установка MySQL сервера
+      ansible.builtin.apt:  # Используем модуль apt для установки пакета
+        name: mysql-server  # Имя пакета для установки
+        state: present  # Указываем, что пакет должен быть установлен
+
+    - name: Ensure MySQL is started and enabled  # Имя задачи - Запуск и включение MySQL
+      ansible.builtin.systemd:  # Используем модуль systemd для управления сервисами
+        name: mysql  # Имя сервиса
+        state: started  # Указываем, что сервис должен быть запущен
+        enabled: true  # Указываем, что сервис должен быть включен при загрузке системы

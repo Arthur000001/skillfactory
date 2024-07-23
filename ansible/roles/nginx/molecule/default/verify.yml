@@ -1,0 +1,9 @@
+# verify.yml
+- name: Verify
+  hosts: all
+  tasks:
+    - name: Check if Nginx is running
+      ansible.builtin.command: pgrep nginx
+      register: result
+      failed_when: result.rc != 0
+      changed_when: false
