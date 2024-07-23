@@ -15,6 +15,7 @@ backend.hcl
 .terraform.lock.hcl
 *.pem
 **/.terraform
+at_work.md
 
 # Исключение временных файлов и логов
 *.log
