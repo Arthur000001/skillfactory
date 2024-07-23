@@ -1,0 +1,18 @@
+# configure_nginx.yml
+- name: Configure Nginx to send PHP to port 9000
+  hosts: all
+  become: true
+  tasks:
+    - name: Configure nginx to send php to 9000 port
+      ansible.builtin.blockinfile:
+        path: /etc/nginx/sites-available/default
+        block: |
+          location ~ \.php$ {
+              include snippets/fastcgi-php.conf;
+              fastcgi_pass 127.0.0.1:9000;
+          }
+
+    - name: Restart nginx
+      ansible.builtin.service:
+        name: nginx
+        state: restarted

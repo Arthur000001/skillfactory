@@ -1,0 +1,18 @@
+# roles/php/tasks/main.yml
+- name: Install php-fpm
+  ansible.builtin.apt:
+    name: php-fpm
+    state: present
+    update_cache: true
+
+- name: Configure php-fpm to listen on port 9000
+  ansible.builtin.lineinfile:
+    path: /etc/php/7.4/fpm/pool.d/www.conf
+    regexp: '^listen ='
+    line: 'listen = 9000'
+
+- name: Start and enable php-fpm service
+  ansible.builtin.service:
+    name: php7.4-fpm
+    state: started
+    enabled: true

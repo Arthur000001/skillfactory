@@ -1,0 +1,12 @@
+# add_user.yml
+- name: Create a new user
+  ansible.builtin.user:
+    name: test_user
+    state: present
+    shell: /bin/bash
+
+- name: Add authorized key for the new user
+  ansible.posix.authorized_key:
+    user: test_user
+    state: present
+    key: "{{ ssh_public_key }}"
