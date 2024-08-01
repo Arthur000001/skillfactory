@@ -1,0 +1,13 @@
+---
+- name: Generate SSH key for ansible user on vm1
+  ansible.builtin.user:
+    name: ansible
+    generate_ssh_key: true
+    ssh_key_bits: 2048
+    ssh_key_file: .ssh/id_rsa
+
+- name: Copy public key to vm2 and vm3
+  ansible.posix.authorized_key:
+    user: ansible
+    state: present
+    key: "{{ lookup('file', '/home/ansible/.ssh/id_rsa.pub') }}"

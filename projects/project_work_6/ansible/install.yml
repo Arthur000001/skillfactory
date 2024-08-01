@@ -1,0 +1,48 @@
+- name: Deploy software on VMs
+  hosts: all
+  become: true
+  vars:
+    postgres_version: "13"  # Версия PostgreSQL
+    postgres_data_dir: "/var/lib/pgsql/{{ postgres_version }}/data"  # Директория данных PostgreSQL
+
+  tasks:
+    - name: Install Docker on app servers
+      ansible.builtin.package:
+        name:
+          - docker
+          - docker-compose
+        state: present
+        update_cache: true
+      when: "'app' in group_names"
+      # Установите Docker и Docker Compose на серверах группы 'app'
+
+    - name: Start Docker service on app servers
+      ansible.builtin.systemd:
+        name: docker
+        state: started
+        enabled: true
+      when: "'app' in group_names"
+      # Запустите и включите сервис Docker на серверах группы 'app'
+
+    - name: Install PostgreSQL on database servers
+      ansible.builtin.package:
+        name: "postgresql{{ postgres_version }}-server"
+        state: present
+        update_cache: true
+      when: "'database' in group_names"
+      # Установите PostgreSQL на серверах группы 'database'
+
+    - name: Ensure PostgreSQL data directory exists
+      ansible.builtin.file:
+        path: "{{ postgres_data_dir }}"
+        state: directory
+        mode: '0700'
+      when: "'database' in group_names"
+      # Убедитесь, что директория данных PostgreSQL существует и имеет правильные права
+
+    - name: Initialize PostgreSQL database if not already initialized
+      ansible.builtin.command:
+        cmd: /usr/pgsql-{{ postgres_version }}/bin/postgresql-{{ postgres_version }}-setup initdb
+        creates: "{{ postgres_data_dir }}/PG_VERSION"
+      when: "'database' in group_names"
+      # Инициализируйте базу данных PostgreSQL только если она еще не инициализирована
