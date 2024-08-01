@@ -1,0 +1,69 @@
+---
+- name: Setup Ansible and SSH access on vm1
+  hosts: vm1
+  become: true
+  tasks:
+    - name: Install Ansible
+      ansible.builtin.package:
+        name: ansible
+        state: present
+
+    - name: Create an Ansible user
+      ansible.builtin.user:
+        name: ansible
+        state: present
+        create_home: true
+
+    - name: Ensure .ssh directory exists for Ansible user
+      ansible.builtin.file:
+        path: /home/ansible/.ssh
+        state: directory
+        owner: ansible
+        group: ansible
+        mode: '0700'
+
+    - name: Generate SSH key for Ansible user
+      community.crypto.openssh_keypair:
+        path: /home/ansible/.ssh/id_rsa
+        type: rsa
+        size: 2048
+      register: ssh_key
+
+    - name: Set fact for SSH key
+      ansible.builtin.set_fact:
+        ansible_ssh_public_key: "{{ ssh_key.public_key }}"
+
+    - name: Copy public key to authorized_keys
+      ansible.builtin.copy:
+        content: "{{ ssh_key.public_key }}"
+        dest: /home/ansible/.ssh/authorized_keys
+        mode: '0600'
+        owner: ansible
+        group: ansible
+
+- name: Setup SSH access on remote hosts without Python
+  hosts: vm2, vm3
+  become: true
+  tasks:
+    - name: Create ansible user on remote hosts
+      ansible.builtin.user:
+        name: ansible
+        state: present
+        create_home: true
+
+    - name: Ensure .ssh directory exists for Ansible user on remote hosts
+      ansible.builtin.file:
+        path: /home/ansible/.ssh
+        state: directory
+        owner: ansible
+        group: ansible
+        mode: '0700'
+
+    - name: Append public key to authorized_keys on remote hosts
+      ansible.builtin.lineinfile:
+        path: /home/ansible/.ssh/authorized_keys
+        line: "{{ hostvars['vm1'].ansible_ssh_public_key }}"
+        create: true
+        mode: '0600'
+        owner: ansible
+        group: ansible

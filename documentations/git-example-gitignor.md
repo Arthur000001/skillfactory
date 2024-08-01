@@ -1,33 +1,4 @@
-# Вспомогательная документация для работы с git
-
-## Основные команды:
-* git push --set-upstream origin <название ветки> - первое влитие ветки
-* git commit -m "комментарий" - создание коммита
-* git branch -m feature/final-assignment feature/final-assignment
-* git fetch origin
-* git branch -u origin/feature/final-assignment feature/final-assignment
-* git remote set-head origin -a
-
-
-## Gitignore
-  touch .gitignore - создание файла для записей по игнорированию каких либо файлов
-
-### Исключение всех файлов временных файлов и логов
-*.log
-*.tmp
-
-### Исключение папок build и dist
-build/
-dist/
-
-### Исключение конфигурационных файлов
-config/database.yml
-
-### Исключение всех файлов с расширением .env
-*.env
-
-## Пример для проекта на Python
-
+```sh
 #Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -142,3 +113,4 @@ dmypy.json
 
 #Pyre type checker
 .pyre/
+```
