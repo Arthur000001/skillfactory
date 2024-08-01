@@ -29,6 +29,10 @@
         size: 2048
       register: ssh_key
 
+    - name: Set fact for SSH key
+      ansible.builtin.set_fact:
+        ansible_ssh_public_key: "{{ ssh_key.public_key }}"
+
     - name: Copy public key to authorized_keys
       ansible.builtin.copy:
         content: "{{ ssh_key.public_key }}"
@@ -58,7 +62,7 @@
     - name: Append public key to authorized_keys on remote hosts
       ansible.builtin.lineinfile:
         path: /home/ansible/.ssh/authorized_keys
-        line: "{{ ssh_key.public_key }}"
+        line: "{{ hostvars['vm1'].ansible_ssh_public_key }}"
         create: true
         mode: '0600'
         owner: ansible
