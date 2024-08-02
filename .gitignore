@@ -34,6 +34,7 @@ files/
 user1_id_rsa
 skillfactory
 *.pub
+ssh
 
 #My
 at_work.md

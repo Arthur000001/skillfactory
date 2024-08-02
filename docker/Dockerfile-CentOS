@@ -1,0 +1,17 @@
+# Use CentOS as the base image
+FROM centos
+
+# Set the working directory to /opt/SF/devops
+WORKDIR /opt/SF/devops
+
+# Install the nmap-ncat package
+RUN yum install -y nmap-ncat
+
+# Default command to keep the container running (optional)
+CMD ["bash"]
+
+
+
+#Надо исполнить:
+#docker build -t centos-devops:latest .
+#docker run -it centos-devops:latest
