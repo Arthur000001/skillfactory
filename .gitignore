@@ -5,16 +5,51 @@ dist/
 # Исключение всех файлов с расширением .env
 *.env
 
-# Исключение конфиденциальных файлов
+# Terrafrom
 terraform.tfvars
 key.json
-user1_id_rsa
-user1_id_rsa.pub
 tfplan.txt
 backend.hcl
 .terraform.lock.hcl
 *.pem
 **/.terraform
+*.tfstate
+*.terraform.tfstate.lock.info
+*terraform.tfstate.backup
+cloud-config*
+
+# Ansible
+ansible.cfg
+.vault_pass.txt
+venv/
+inventory
+inventory.ini
+vars/
+tests/
+templates/
+files/
+*.retry
+
+# keys
+user1_id_rsa
+skillfactory
+*.pub
+ssh
+
+#My
+at_work.md
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db
 
 # Исключение временных файлов и логов
 *.log
@@ -23,4 +58,16 @@ backend.hcl
 # Исключение системных файлов
 .DS_Store
 Thumbs.db
+
+# Локальные настройки и файлы
+*.retry
+
+# Build directories
+build/
+dist/
+tmp/
+
+# Python
+__pycache__/
+*.py[cod]
 

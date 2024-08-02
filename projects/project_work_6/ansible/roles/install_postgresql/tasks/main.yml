@@ -1,0 +1,22 @@
+- name: Install PostgreSQL
+  ansible.builtin.apt:
+    name: "postgresql-{{ postgres_version }}"
+    state: present
+
+- name: Start PostgreSQL service
+  ansible.builtin.service:
+    name: postgresql
+    state: started
+    enabled: true
+
+- name: Check if PostgreSQL data directory exists
+  ansible.builtin.stat:
+    path: "{{ postgres_data_dir }}"
+  register: pg_data_dir
+
+- name: Configure PostgreSQL data directory
+  community.postgresql.postgresql_initdb:
+    data_dir: "{{ postgres_data_dir }}"
+  become: true
+  become_user: postgres
+  when: not pg_data_dir.stat.exists
